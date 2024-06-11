@@ -5,6 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Igor Vinogradov's Personal Page</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        function startTimer(endtime, display) {
+            function updateTimer() {
+                var now = new Date();
+                var t = endtime - now;
+                
+                var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((t % (1000 * 60)) / 1000);
+
+                display.textContent = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+
+                if (t < 0) {
+                    clearInterval(timerInterval);
+                    display.textContent = "EXPIRED";
+                }
+            }
+
+            updateTimer();
+            var timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        window.onload = function () {
+            // Set the end time to June 11, 12:00 EST (UTC-4)
+            var endDate = new Date(Date.UTC(2024, 5, 11, 16, 0, 0)); // June 11, 12:00 EST (UTC-4)
+            var display = document.querySelector('#timer');
+            startTimer(endDate, display);
+        };
+    </script>
 </head>
 <body>
     <header>
@@ -26,6 +56,7 @@
             <p>Мой Вес - 97Кг.</p>
             <p>Свет Глаз - Карий.</p>
             <p>Свет Волос - Натурально Коричневые.</p>
+            <p>Таймер до День Рождение: <span id="timer"></span></p>
             <p>Любимая Игра - <a href="https://link.brawlstars.com/ru/" target="_blank">Brawl Stars</a>.</p>
         </section>
         <section class="photos">
@@ -57,5 +88,4 @@
     </div>
 </body>
 </html>
-</body>
-</html>
+
