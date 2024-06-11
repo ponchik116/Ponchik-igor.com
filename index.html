@@ -64,6 +64,7 @@
         window.onload = function () {
             // Set the initial end time to June 11, 12:00 EST (UTC-4)
             var endDate = new Date(Date.UTC(2024, 5, 11, 16, 0, 0)); // June 11, 12:00 EST (UTC-4)
+            endDate.setHours(endDate.getHours() + 1); // Add 1 hour to the timer
             var timerDisplay = document.querySelector('#timer');
             startTimer(endDate, timerDisplay);
 
