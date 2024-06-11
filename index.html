@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Igor Vinogradov's Personal Page</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .active-users {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
     <script>
         function startTimer(endtime, display) {
             function updateTimer() {
@@ -28,11 +40,36 @@
             setInterval(updateTimer, 1000);
         }
 
+        function updateActiveUsers(display) {
+            let activeUsers = Math.floor(Math.random() * (4999 - 50 + 1)) + 50;
+
+            function refreshActiveUsers() {
+                let change = Math.floor(Math.random() * 201) - 100; // Random change between -100 and +100
+                activeUsers += change;
+
+                // Ensure active users remain within 50 and 4999
+                if (activeUsers < 50) {
+                    activeUsers = 50;
+                } else if (activeUsers > 4999) {
+                    activeUsers = 4999;
+                }
+
+                display.textContent = "Актив сайта: " + activeUsers;
+            }
+
+            display.textContent = "Актив сайта: " + activeUsers;
+            setInterval(refreshActiveUsers, 300000); // Update every 5 minutes (300000 ms)
+        }
+
         window.onload = function () {
             // Set the initial end time to June 11, 12:00 EST (UTC-4)
             var endDate = new Date(Date.UTC(2024, 5, 11, 16, 0, 0)); // June 11, 12:00 EST (UTC-4)
-            var display = document.querySelector('#timer');
-            startTimer(endDate, display);
+            var timerDisplay = document.querySelector('#timer');
+            startTimer(endDate, timerDisplay);
+
+            // Set up the active users display
+            var activeUsersDisplay = document.querySelector('#active-users');
+            updateActiveUsers(activeUsersDisplay);
         };
     </script>
 </head>
@@ -86,5 +123,6 @@
             </ul>
         </section>
     </div>
+    <div id="active-users" class="active-users"></div>
 </body>
 </html>
