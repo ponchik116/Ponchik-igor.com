@@ -10,26 +10,26 @@
             function updateTimer() {
                 var now = new Date();
                 var t = endtime - now;
-                
+
+                if (t < 0) {
+                    endtime.setFullYear(endtime.getFullYear() + 1);
+                    t = endtime - now;
+                }
+
                 var days = Math.floor(t / (1000 * 60 * 60 * 24));
                 var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((t % (1000 * 60)) / 1000);
 
                 display.textContent = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
-
-                if (t < 0) {
-                    clearInterval(timerInterval);
-                    display.textContent = "EXPIRED";
-                }
             }
 
             updateTimer();
-            var timerInterval = setInterval(updateTimer, 1000);
+            setInterval(updateTimer, 1000);
         }
 
         window.onload = function () {
-            // Set the end time to June 11, 12:00 EST (UTC-4)
+            // Set the initial end time to June 11, 12:00 EST (UTC-4)
             var endDate = new Date(Date.UTC(2024, 5, 11, 16, 0, 0)); // June 11, 12:00 EST (UTC-4)
             var display = document.querySelector('#timer');
             startTimer(endDate, display);
@@ -88,4 +88,3 @@
     </div>
 </body>
 </html>
-
