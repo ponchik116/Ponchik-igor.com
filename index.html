@@ -41,7 +41,7 @@
         }
 
         function updateActiveUsers(display) {
-            let activeUsers = Math.floor(Math.random() * (3000 - 50 + 1)) + 50;
+            let activeUsers = parseInt(localStorage.getItem('activeUsers')) || Math.floor(Math.random() * (3000 - 50 + 1)) + 50;
 
             function refreshActiveUsers() {
                 let change = Math.floor(Math.random() * 201) - 100; // Random change between -100 and +100
@@ -54,6 +54,7 @@
                     activeUsers = 3000;
                 }
 
+                localStorage.setItem('activeUsers', activeUsers);
                 display.textContent = "Актив сайта: " + activeUsers;
             }
 
