@@ -41,17 +41,17 @@
         }
 
         function updateActiveUsers(display) {
-            let activeUsers = Math.floor(Math.random() * (4999 - 50 + 1)) + 50;
+            let activeUsers = Math.floor(Math.random() * (3000 - 50 + 1)) + 50;
 
             function refreshActiveUsers() {
                 let change = Math.floor(Math.random() * 201) - 100; // Random change between -100 and +100
                 activeUsers += change;
 
-                // Ensure active users remain within 50 and 4999
+                // Ensure active users remain within 50 and 3000
                 if (activeUsers < 50) {
                     activeUsers = 50;
-                } else if (activeUsers > 4999) {
-                    activeUsers = 4999;
+                } else if (activeUsers > 3000) {
+                    activeUsers = 3000;
                 }
 
                 display.textContent = "Актив сайта: " + activeUsers;
