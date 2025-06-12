@@ -4,17 +4,291 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Igor Vinogradov's Personal Page</title>
-    <link rel="stylesheet" href="style.css">
     <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif; /* A modern, clean font */
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light grey background */
+            color: #333; /* Dark text for readability */
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1000px; /* Limit max width for better readability on large screens */
+            margin: 20px auto;
+            padding: 0 20px;
+            overflow: hidden;
+            background-color: #fff; /* White background for content areas */
+            border-radius: 10px; /* Slightly rounded corners for containers */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+        }
+
+        header {
+            background: linear-gradient(135deg, #35424a, #5C54CF); /* Gradient background for header */
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 5px solid #e8491d; /* Strong accent line */
+            border-radius: 10px 10px 0 0; /* Rounded top corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* More prominent shadow for header */
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em; /* Larger heading */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Text shadow for depth */
+        }
+
+        a {
+            color: #e8491d; /* Bright accent color for links */
+            text-decoration: none;
+            transition: color 0.3s ease; /* Smooth transition on hover */
+        }
+
+        a:hover {
+            color: #ff6a3a; /* Slightly different color on hover */
+            text-decoration: underline;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 30px 0;
+            border-bottom: 1px solid #eee; /* Light separator */
+        }
+
+        section:last-of-type {
+            border-bottom: none; /* No border for the last section */
+        }
+
+        h2 {
+            color: #35424a; /* Darker heading color */
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-left: 5px solid #e8491d; /* Accent line for headings */
+            padding-left: 10px;
+        }
+
+        ul {
+            list-style: none; /* Remove default bullet points */
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        /* Image Styling */
+        .photos div {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid for photos */
+            gap: 20px; /* Space between images */
+        }
+
+        .photos img {
+            width: 100%;
+            height: 250px; /* Fixed height for image consistency */
+            object-fit: cover; /* Crop images to fit while maintaining aspect ratio */
+            border-radius: 8px; /* Rounded corners for images */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Shadow for images */
+            transition: transform 0.3s ease; /* Smooth zoom effect on hover */
+            cursor: pointer; /* Indicate that images are clickable */
+        }
+
+        .photos img:hover {
+            transform: scale(1.05); /* Slightly enlarge image on hover */
+        }
+
+        /* Active Users Display */
         .active-users {
             position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: rgba(0, 0, 0, 0.7);
+            bottom: 20px; /* Slightly higher from bottom */
+            right: 20px; /* Slightly further from right */
+            background-color: rgba(0, 0, 0, 0.8); /* Darker background */
             color: white;
-            padding: 10px;
+            padding: 12px 18px; /* More padding */
+            border-radius: 8px; /* Rounded corners */
+            font-size: 15px; /* Slightly larger font */
+            z-index: 1000; /* Ensure it stays on top */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for pop-up effect */
+        }
+
+        /* Fullscreen Image Overlay */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Dark semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001; /* <-- ИЗМЕНЕНО: теперь выше, чем у галереи */
+            opacity: 0; /* Initially hidden */
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .fullscreen-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .fullscreen-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain; /* Ensure the whole image is visible */
             border-radius: 5px;
-            font-size: 14px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* White glow effect */
+        }
+
+        /* Birthday Particles CSS */
+        .birthday-particle {
+            position: fixed;
+            font-size: 2em; /* Size of the emojis */
+            pointer-events: none; /* Allows clicks to pass through */
+            opacity: 0; /* Start invisible */
+            z-index: 9990; /* Below fullscreen overlay */
+            animation: fallDown 8s ease-in forwards; /* New animation name and timing */
+            transform: translateY(0); /* Start position */
+        }
+
+        @keyframes fallDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px) rotate(0deg); /* Start slightly above top and rotate */
+            }
+            10% {
+                opacity: 1; /* Fade in quickly */
+            }
+            80% {
+                opacity: 1; /* Stay visible for most of the fall */
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg); /* Fall to bottom of screen and rotate */
+            }
+        }
+
+        /* Gallery Modal Styles */
+        .gallery-modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 10000; /* Sit on top of everything else */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1200px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            position: relative;
+            animation-name: animatetop;
+            animation-duration: 0.4s;
+            max-height: 90vh; /* Limit height to enable scrolling within modal */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        /* Add Animation */
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+
+        .gallery-close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .gallery-close:hover,
+        .gallery-close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            padding-top: 40px; /* Space for close button */
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 150px; /* Uniform height for gallery thumbnails */
+            object-fit: cover;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .gallery-grid img:hover {
+            transform: scale(1.03);
+        }
+
+        /* Button Styling */
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #e8491d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .button:hover {
+            background-color: #ff6a3a;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 0 10px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .photos div {
+                grid-template-columns: 1fr; /* Stack images on small screens */
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
         }
     </style>
     <script>
@@ -24,6 +298,7 @@
                 var t = endtime - now;
 
                 if (t < 0) {
+                    // If the end time has passed, set it for the next year
                     endtime.setFullYear(endtime.getFullYear() + 1);
                     t = endtime - now;
                 }
@@ -62,36 +337,184 @@
             setInterval(refreshActiveUsers, 5000); // Update every 5 seconds (5000 ms)
         }
 
+        // --- Fullscreen Image Functionality ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.photos img');
+            const overlay = document.createElement('div');
+            overlay.classList.add('fullscreen-overlay');
+            document.body.appendChild(overlay);
+
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    if (!overlay.classList.contains('visible')) {
+                        // Open fullscreen
+                        const fullImg = document.createElement('img');
+                        fullImg.src = this.src;
+                        fullImg.alt = this.alt;
+                        overlay.innerHTML = ''; // Clear previous image if any
+                        overlay.appendChild(fullImg);
+                        overlay.classList.add('visible');
+                    }
+                });
+            });
+
+            // Close fullscreen when clicking the overlay itself
+            overlay.addEventListener('click', function() {
+                overlay.classList.remove('visible');
+            });
+        });
+
+        // --- Age Calculation Functionality ---
+        function calculateAge(birthDate) {
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+
+            // If the current month is before the birth month, or if it's the birth month but the day is before the birth day,
+            // then the birthday hasn't happened yet this year.
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        // --- Birthday Emojis Functionality ---
+        function createBirthdayParticles() {
+            const emojis = ['🎈', '🥳', '🎂', '🎉', '🎊'];
+            const numParticles = 50; 
+
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('span');
+                particle.classList.add('birthday-particle');
+                particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                // Randomize starting X position
+                particle.style.left = Math.random() * 100 + 'vw';
+                
+                // Randomize animation delay to make them appear at different times
+                particle.style.animationDelay = Math.random() * 8 + 's'; 
+                particle.style.animationDuration = (5 + Math.random() * 5) + 's'; 
+                particle.style.top = '-50px'; 
+
+                document.body.appendChild(particle);
+
+                // Remove particle after animation ends to clean up DOM
+                particle.addEventListener('animationend', () => {
+                    particle.remove();
+                });
+            }
+        }
+
+        // --- Gallery Functionality ---
+        function setupGallery() {
+            const galleryButton = document.getElementById('open-gallery-button');
+            const galleryModal = document.getElementById('galleryModal');
+            const spanClose = document.getElementsByClassName('gallery-close')[0];
+            const galleryGrid = document.getElementById('gallery-grid');
+
+            // Generate image file names from image1.png to image9.png
+            const mediaFiles = [];
+            for (let i = 1; i <= 9; i++) {
+                mediaFiles.push(`media/image${i}.png`);
+            }
+
+            // Populate the gallery grid
+            mediaFiles.forEach(file => {
+                const img = document.createElement('img');
+                img.src = file;
+                img.alt = file.split('/').pop(); // Use filename as alt text
+
+                galleryGrid.appendChild(img);
+                // Add click listener for images
+                img.addEventListener('click', function() {
+                    const overlay = document.querySelector('.fullscreen-overlay');
+                    const fullImg = document.createElement('img');
+                    fullImg.src = this.src;
+                    fullImg.alt = this.alt;
+                    overlay.innerHTML = ''; 
+                    overlay.appendChild(fullImg);
+                    overlay.classList.add('visible');
+                });
+            });
+
+
+            // When the user clicks the button, open the modal 
+            galleryButton.onclick = function() {
+                galleryModal.style.display = "flex"; // Use flex to center content
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            spanClose.onclick = function() {
+                galleryModal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal content, close it
+            window.addEventListener('click', function(event) {
+                if (event.target == galleryModal) {
+                    galleryModal.style.display = "none";
+                }
+            });
+        }
+
+
         window.onload = function () {
-            // Set the initial end time to June 11, 12:00 EST (UTC-4)
-            var endDate = new Date(Date.UTC(2024, 5, 11, 16, 0, 0)); // June 11, 12:00 EST (UTC-4)
-            endDate.setHours(endDate.getHours() + 1); // Add 1 hour to the timer
+            // Set Igor's birth date here (Year, Month (0-11), Day)
+            // To be 15 in June 2025, his birth year is 2010.
+            // June is month 5 (0-indexed), 12th day.
+            const igorBirthDate = new Date(2010, 5, 12); // June 12, 2010
+
+            // Calculate and display age
+            const ageDisplay = document.querySelector('#igor-age');
+            if (ageDisplay) {
+                ageDisplay.textContent = calculateAge(igorBirthDate);
+            }
+
+            // Set the next birthday for the timer.
+            // Using a new Date object to avoid modifying igorBirthDate directly
+            let nextBirthday = new Date(igorBirthDate);
+            nextBirthday.setFullYear(new Date().getFullYear()); // Set year to current year first
+
+            // If birthday has already passed this year, set it for next year
+            const today = new Date();
+            if (today > nextBirthday) {
+                nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+            }
+            
             var timerDisplay = document.querySelector('#timer');
-            startTimer(endDate, timerDisplay);
+            startTimer(nextBirthday, timerDisplay);
+
 
             // Set up the active users display
             var activeUsersDisplay = document.querySelector('#active-users');
             updateActiveUsers(activeUsersDisplay);
+
+            // Check if it's Igor's birthday using local time (more reliable for client-side visuals)
+            const now = new Date(); // Gets current local time
+            const birthMonth = 5; // June (0-indexed)
+            const birthDay = 12; // 12th day
+
+            if (now.getMonth() === birthMonth && now.getDate() === birthDay) {
+                createBirthdayParticles();
+            }
+
+            // Initialize the gallery functionality
+            setupGallery();
         };
     </script>
 </head>
 <body>
     <header>
-        <div class="container">
-            <h1>Igor Vinogradov's Personal Page</h1>
-        </div>
+        <h1>Igor Vinogradov's Personal Page</h1>
     </header>
     <div class="container">
         <section class="Ознакомление">
             <h2>Ознакомление</h2>
-            <p>Hello! Привет моё имя Жирный Пончик Игорь. вы на моём сайте.Здесь Вы увидете информацию обо-мне, мои фотки и моего брата.</p>
+            <p>Hello! Привет моё имя Жирный Пончик Игорь. вы на моём сайте. Здесь Вы увидите информацию обо-мне, мои фотки и моего брата.</p>
         </section>
-    </div>
-    <div class="container">
         <section class="Bio">
             <h2>Биография</h2>
             <p>Моё Имя - Igor Vinogradov.</p>
-            <p>Мне - 13 лет.</p>
+            <p>Мне - <span id="igor-age"></span> лет.</p>
             <p>Мой Вес - 97Кг.</p>
             <p>Свет Глаз - Карий.</p>
             <p>Свет Волос - Натурально Коричневые.</p>
@@ -102,9 +525,9 @@
         <section class="photos">
             <h2>Photos</h2>
             <div>
-                <img src="img/igor vinogrado.png" alt="я" style="width: 35%; height: auto;">
-                <img src="img/igor vinogrado2.png" alt="Мой брат" style="width: 35%; height: auto;">
-                <img src="photo3.jpg" alt="Мамы Нету">
+                <img src="img/igor vinogrado.png" alt="я">
+                <img src="img/igor vinogrado2.png" alt="Мой брат">
+                <button id="open-gallery-button" class="button">Галерея</button>
             </div>
         </section>
         <section class="projects">
@@ -127,5 +550,14 @@
         </section>
     </div>
     <div id="active-users" class="active-users"></div>
+
+    <div id="galleryModal" class="gallery-modal">
+        <div class="gallery-modal-content">
+            <span class="gallery-close">×</span>
+            <h2>Галерея</h2>
+            <div id="gallery-grid" class="gallery-grid">
+                </div>
+        </div>
+    </div>
 </body>
 </html>
