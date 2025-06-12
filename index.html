@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Igor Vinogradov's Personal Page</title>
-    <style>
+    <link rel="icon" href="icon/icon.png" type="image/png"> <style>
         /* General Styling */
         body {
             font-family: 'Arial', sans-serif; /* A modern, clean font */
@@ -419,6 +419,7 @@
             }
 
             // Populate the gallery grid
+            galleryGrid.innerHTML = ''; // Clear previous content if function is called multiple times
             mediaFiles.forEach(file => {
                 const img = document.createElement('img');
                 img.src = file;
